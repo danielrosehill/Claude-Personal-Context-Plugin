@@ -25,7 +25,8 @@ to an account. Personal background context is the last category of data that sho
 So: one store, outside every workspace, in plain markdown, at a path you choose.
 
 ```text
-        ~/.claude-user-data/personal-context/     ← this plugin builds and maintains it
+        <user data root>/personal-context/        ← this plugin builds and maintains it
+                              │                     (resolved, never inside ~/.claude)
                               │
          ┌────────────────────┼────────────────────┐
          ▼                    ▼                    ▼
@@ -91,7 +92,23 @@ Then:
 | --- | --- | --- |
 | Plugin code | Install path, replaced on update | n/a |
 | Machine-local config | `~/.claude-plugins/personal-context/config.json` | Never |
-| The store | `~/.claude-user-data/personal-context/` by default | Private repo, or not at all |
+| The store | Resolved, not fixed — see below | Private repo, or not at all |
+
+**Nothing lives in `~/.claude`.** That directory is Claude Code's own: it is the tool's state,
+not the person's, and a context layer whose point is outliving any one tool cannot sit inside it.
+`scripts/paths.sh` treats any path under `~/.claude` as a hard error, including one the user set
+themselves — the single setting with no override.
+
+The store location is resolved in order: `$PERSONAL_CONTEXT_STORE` → `$CLAUDE_USER_DATA` → **an
+existing plugin data root already on disk** (`~/.claude-user-data`, then
+`${XDG_DATA_HOME:-~/.local/share}/claude-plugins`) → default `~/.claude-user-data/`. If you
+already keep plugin content somewhere, this plugin takes a folder inside that root rather than
+starting a second one, and `context-init` tells you which rule fired. Full specification:
+[`docs/storage-paths.md`](docs/storage-paths.md).
+
+```bash
+sh scripts/paths.sh --json   # what would be used on this machine, and why
+```
 
 The store is never public. `context-init` refuses to configure a public remote, and every write
 path re-checks before committing.

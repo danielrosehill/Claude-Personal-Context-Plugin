@@ -15,14 +15,26 @@ anything below.
 
 ## Paths
 
+**Never hard-code them.** Ask the resolver:
+
 ```bash
-CONFIG_DIR="$HOME/.claude-plugins/personal-context"     # machine-local, never committed
-CONFIG="$CONFIG_DIR/config.json"
-DEFAULT_STORE="$HOME/.claude-user-data/personal-context" # user content, private repo
+sh "${CLAUDE_PLUGIN_ROOT}/scripts/paths.sh" --json
 ```
 
+It returns `config_dir`, `config_file`, `store`, `store_root`, and — importantly — the rule that
+fired for each (`config_source`, `store_source`). Full specification:
+`${CLAUDE_PLUGIN_ROOT}/docs/storage-paths.md`.
+
 Machine-local config and user content are separate on purpose: the config holds a path that is
-true on this laptop only; the store is the thing worth syncing.
+true on this laptop only; the store is the thing worth syncing. Neither ever lives in
+`~/.claude` — that is Claude Code's own directory, and the resolver treats any path inside it as
+a hard error with no override.
+
+If `store_source` comes back `adopted-existing`, the user already keeps plugin content under
+that root and this plugin is taking a folder inside it rather than starting a second root. Say
+so in plain terms when you report the path — "your other plugins keep their data in
+`~/.local/share/claude-plugins`, so this goes alongside them" — and offer an alternative if they
+would rather move everything to `~/.claude-user-data`. Do not move anything on your own.
 
 ## Procedure
 
@@ -36,7 +48,7 @@ Back up to `config.json.bak.<timestamp>` before replacing.
 | Field | Question | Default |
 | --- | --- | --- |
 | `backend` | "Where should this live — a plain folder, an Obsidian vault, a private git repo, or an MCP memory server?" | `filesystem` |
-| `path` | "Path to the store" (skip for `mcp`) | `~/.claude-user-data/personal-context` |
+| `path` | "Path to the store" (skip for `mcp`) | `store` from the resolver — show it, and where it came from |
 | `server` | "MCP server name, as it appears in `.mcp.json`" (only for `mcp`) | — |
 | `git_remote` | Only for `git`: "Private remote, or local-only?" | `local-only` |
 
@@ -88,7 +100,7 @@ whether to keep them (useful while learning the format) or delete them now.
   "contract_version": 1,
   "schema_version": 1,
   "backend": "filesystem",
-  "path": "/home/<user>/.claude-user-data/personal-context",
+  "path": "<resolved store path — absolute, never inside ~/.claude>",
   "server": null,
   "git_remote": null,
   "created": "2026-08-14",
@@ -113,6 +125,10 @@ scopes that workspace is allowed to read.
 ## Rules
 
 - **Never write to the store in this skill** beyond the scaffold. Setup is not intake.
+- **Never write anything to `~/.claude`,** and never offer it as a location. The resolver refuses
+  it; do not work around the refusal by writing files directly.
+- **Never create a second user-data root** when one already exists. Adopt it, or ask.
+- **Never move or migrate existing plugin data** as a side effect of setting this one up.
 - **Never configure a public remote.** No override, no flag, no "if you're sure".
 - **Never store personal content in `config.json`.** It holds paths and backend settings only.
 - If the person names a path inside an existing repo that is public, treat it the same as a

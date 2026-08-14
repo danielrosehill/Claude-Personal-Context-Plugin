@@ -13,7 +13,9 @@ diagnostic checklist — see the prohibitions in the contract.
 
 ## Before starting
 
-- Read `~/.claude-plugins/personal-context/config.json`. If missing → run `context-init` first.
+- Resolve paths with `sh "${CLAUDE_PLUGIN_ROOT}/scripts/paths.sh" --json` and read `config_file`.
+  If it doesn't exist → run `context-init` first. Never hard-code a path; see
+  `docs/storage-paths.md`.
 - Read the store's `INDEX.md`. If entries exist, this is a **resumption**: report which sections
   have content and offer to continue rather than restart.
 - Say up front, once: any question can be skipped, the session can stop at any point and resume

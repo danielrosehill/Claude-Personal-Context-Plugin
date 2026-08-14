@@ -11,8 +11,9 @@ steps.
 
 ## Procedure
 
-1. Read the config. Ask for a destination; default
-   `~/.claude-user-data/personal-context-export-YYYYMMDD/`.
+1. Resolve paths (`sh "${CLAUDE_PLUGIN_ROOT}/scripts/paths.sh" --json`) and read the config. Ask
+   for a destination; default `<store_root>/personal-context-export-YYYYMMDD/`, i.e. alongside
+   the store rather than inside it.
 
 2. Copy every entry as markdown, preserving the directory structure, plus `INDEX.md` and
    `scopes.yaml` verbatim.
@@ -29,7 +30,7 @@ steps.
      "contract_version": 1,
      "exported": "2026-08-14T12:00:00Z",
      "backend": "filesystem",
-     "source_path": "/home/<user>/.claude-user-data/personal-context",
+     "source_path": "<resolved store path>",
      "entry_count": 34,
      "types": {"person": 9, "period": 4, "event": 6, "pattern": 7, "care": 3, "preference": 5},
      "scopes": ["general", "career", "family", "relationship", "health"],

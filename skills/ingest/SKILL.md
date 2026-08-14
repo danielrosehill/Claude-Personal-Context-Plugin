@@ -10,8 +10,8 @@ interviewing them about the same period.
 
 ## Before starting
 
-Read the config, read `INDEX.md` (so you can update rather than duplicate), and ask two
-questions:
+Resolve paths (`sh "${CLAUDE_PLUGIN_ROOT}/scripts/paths.sh" --json`), read the config, read
+`INDEX.md` (so you can update rather than duplicate), and ask two questions:
 
 1. **What is this material?** A journal is not a message export is not a CV; the reading strategy
    differs, and knowing the genre prevents category errors.

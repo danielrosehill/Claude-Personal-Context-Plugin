@@ -88,5 +88,7 @@ matters to them.
 - **Never infer and store** health conditions, sexuality, religion, politics or immigration
   status that were not stated.
 - **One file per entry, always.** No combined files, no appending a person to a "people.md".
+- Resolve the store with `sh "${CLAUDE_PLUGIN_ROOT}/scripts/paths.sh" --json` and the `path` in
+  `config.json`; never hard-code a location, and never write anything under `~/.claude`.
 - If the store path is missing, stop and say so. Do not create a store here, and do not fall back
   to any other memory mechanism.

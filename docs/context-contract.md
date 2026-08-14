@@ -61,7 +61,12 @@ Filenames are `<slug>.md`, lowercase, hyphenated, stable. The `id` in frontmatte
 identifier of record; renaming a file without updating references is the one destructive
 mistake this format permits.
 
-Default store root: `~/.claude-user-data/personal-context`.
+**Where the store lives** is resolved rather than fixed, and never inside the assistant's own
+configuration directory (`~/.claude` for Claude Code). An implementation resolves, in order: an
+explicit override, a user-declared data root (`$CLAUDE_USER_DATA`), an existing plugin data root
+already on disk — adopted rather than duplicated — and only then a default of
+`~/.claude-user-data/<implementation>/`. See `storage-paths.md` for the reference
+implementation of that rule.
 
 ---
 
@@ -301,7 +306,10 @@ An implementing agent must not:
 - infer and store sensitive attributes — health, sexuality, religion, politics, immigration
   status — that the person did not state, at any confidence level;
 - lower a `sensitivity` value, or promote a `confidence` value, on its own initiative;
-- push a store to a public remote, or include store content in a public repository, ever.
+- push a store to a public remote, or include store content in a public repository, ever;
+- place the store or its configuration inside the assistant's own configuration directory
+  (`~/.claude`), which couples material meant to outlive the tool to the tool itself;
+- create a second user-data root when one already exists, or migrate an existing one unasked.
 
 ---
 

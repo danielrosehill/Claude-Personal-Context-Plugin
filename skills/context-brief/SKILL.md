@@ -23,7 +23,8 @@ Plus `include_sensitive` (default false) and any `exclude` list.
 
 ## Procedure
 
-1. Read `~/.claude-plugins/personal-context/config.json` for the backend and path. If the store
+1. Resolve the config with `sh "${CLAUDE_PLUGIN_ROOT}/scripts/paths.sh" --json` (never hard-code
+   a path; see `docs/storage-paths.md`), and read `config_file` for the backend and store. If the store
    is unreachable: say so, continue without background context, and **do not** substitute any
    model-managed memory. A missing store is a visible condition, not a silent one.
 2. Read `scopes.yaml` and `INDEX.md`.
