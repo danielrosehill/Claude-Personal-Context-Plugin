@@ -106,6 +106,29 @@ path re-checks before committing.
 Writing your own consumer means reading §7 (read protocol) and §8 (write protocol). There is no
 API to call — the store is files.
 
+## Relationship to `claude-user-memory`
+
+[Claude-User-Memory-Plugin](https://github.com/danielrosehill/Claude-User-Memory-Plugin) (v2.0.0,
+2026-04) solves an adjacent problem and the two are easy to confuse. The seam:
+
+| | `claude-user-memory` | `personal-context` |
+| --- | --- | --- |
+| Remembers | Operational facts for working with the assistant — preferences, corrections, role, ongoing projects | Biographical background — people, chapters, events, patterns, care history |
+| Unit | An atomic fact | A typed entry with provenance, confidence and history |
+| Source of truth | A memory backend reached over MCP | Markdown files on disk |
+| Separation | Two fixed contexts: personal and work | Arbitrary scopes per store, plus three sensitivity levels |
+| Built by | Accretion during ordinary sessions | Intake interview, ingestion of existing material, gap analysis |
+| Fires | Automatically, when the assistant would otherwise ask | On request, by a workspace that declares its scopes |
+
+They compose rather than compete: a store with `backend: mcp` can sit on the same memory server
+`claude-user-memory` uses, provided the server round-trips this schema. Use that one so the
+assistant stops re-asking your preferences; use this one when a workspace needs to know who the
+people in your life are.
+
+If the two are ever consolidated, this plugin is the successor — the file-as-source-of-truth,
+scoped-read and export-conformance requirements can express the older contract, and the reverse
+is not true.
+
 ## Related
 
 - [Therapy-Tracking-Plugin](https://github.com/danielrosehill/Therapy-Tracking-Plugin) — the administrative layer for an ongoing course of therapy
