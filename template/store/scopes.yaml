@@ -1,0 +1,16 @@
+contract_version: 1
+
+# A scope is a slice of a life. Entries declare which they belong to; workspaces declare
+# which they may read. The intersection is what gets loaded.
+#
+# Keep `general` small — everything in it is read by every workspace, forever.
+# Edit this list freely; it is yours, not normative.
+
+scopes:
+  general: Applies everywhere. Basics, and preferences about how to be spoken to.
+  career: Work, colleagues, employers, professional identity.
+  family: Family of origin, household, children.
+  relationship: Partner, romantic history.
+  health: Physical and mental health, care, medication.
+  money: Finances, obligations, security.
+  faith: Religious and communal life.
