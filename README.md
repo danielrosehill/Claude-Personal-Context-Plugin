@@ -123,12 +123,12 @@ path re-checks before committing.
 Writing your own consumer means reading §7 (read protocol) and §8 (write protocol). There is no
 API to call — the store is files.
 
-## Relationship to `claude-user-memory`
+## Relationship to `user-memory`
 
 [Claude-User-Memory-Plugin](https://github.com/danielrosehill/Claude-User-Memory-Plugin) (v2.0.0,
 2026-04) solves an adjacent problem and the two are easy to confuse. The seam:
 
-| | `claude-user-memory` | `personal-context` |
+| | `user-memory` | `personal-context` |
 | --- | --- | --- |
 | Remembers | Operational facts for working with the assistant — preferences, corrections, role, ongoing projects | Biographical background — people, chapters, events, patterns, care history |
 | Unit | An atomic fact | A typed entry with provenance, confidence and history |
@@ -138,7 +138,7 @@ API to call — the store is files.
 | Fires | Automatically, when the assistant would otherwise ask | On request, by a workspace that declares its scopes |
 
 They compose rather than compete: a store with `backend: mcp` can sit on the same memory server
-`claude-user-memory` uses, provided the server round-trips this schema. Use that one so the
+`user-memory` uses, provided the server round-trips this schema. Use that one so the
 assistant stops re-asking your preferences; use this one when a workspace needs to know who the
 people in your life are.
 
