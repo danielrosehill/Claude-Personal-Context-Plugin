@@ -1,6 +1,6 @@
 {
   "name": "personal-context",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Builds and maintains a persistent, portable background context layer about the user — intake interview, ingestion of existing material, gap analysis, scoped retrieval, maintenance and export. Plain markdown in a store the user owns; explicitly does not use model-managed memory. Read by issue-scoped workspaces (e.g. the therapy workspace template) so they never have to re-ask who the person is.",
   "author": {
     "name": "Daniel Rosehill",
